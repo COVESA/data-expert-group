@@ -1,0 +1,13 @@
+
+@startuml
+
+
+component "Vehicle API Client" as Client
+component "Vehicle API Server" as Server
+component "Vehicle Data Provider" as DataProvider
+note right of DataProvider: Implemented as Vehicle API Client
+
+Client -> Server : Vehicle API
+Server <- DataProvider : Vehicle API
+
+@enduml

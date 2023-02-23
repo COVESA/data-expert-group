@@ -1,0 +1,22 @@
+
+@startuml
+participant "Mobile App" as App
+participant "OEM Backend" as Backend
+participant "Externally Exposed Vehicle API Server" as VehicleServer1
+participant "Internal Subsystem Vehicle API Server" as VehicleServer2
+participant TrunkMotor as Motor
+
+App -> Backend : Trunk Open Request
+Backend -> VehicleServer1 : Trunk Open Request
+VehicleServer1 -> VehicleServer2 : Trunk Open Request
+VehicleServer2 -> Motor : Trunk Open Request
+
+
+VehicleServer2 <- Motor : Trunk Opened
+VehicleServer1 <- VehicleServer2 : Trunk Opened
+Backend <- VehicleServer1 : Trunk Opened
+App <- Backend : Trunk Opend
+
+
+@enduml
+

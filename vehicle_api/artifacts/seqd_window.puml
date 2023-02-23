@@ -1,0 +1,34 @@
+
+@startuml
+participant "Mobile App (API Client)" as App
+participant "Vehicle API Server" as VehicleServer
+participant "Window subsystem (API Client) API Server" as Window
+
+note across: Subscribing to data the enities are interested in
+App -> VehicleServer : Subscribe("WindowPos", "CurrentValue")
+VehicleServer <- Window : Subscribe("WindowPos", "TargetValue")
+
+note across: From start window is open
+VehicleServer <- Window : Provide("WindowPos", "CurrentValue", 0 /* fully open*/)
+App <- VehicleServer : Data("WindowPos", "CurrentValue", 0 /* fully open*/)
+
+note across: App request it to be closed
+App -> VehicleServer : Provide("WindowPos", "TargetValue",100) /* closed*/
+VehicleServer -> Window : Data("WindowPos", "TargetValue", 100)
+
+note across: Window start moving
+VehicleServer <- Window : Provide("WindowPos", "CurrentValue", 50)
+App <- VehicleServer : Data("WindowPos", "CurrentValue", 50 )
+VehicleServer <- Window : Provide("WindowPos", "CurrentValue", 75)
+App <- VehicleServer : Data("WindowPos", "CurrentValue", 75)
+
+
+note across: When moving is finalized the window subsystem "resets" the request, in this example by a "None" value
+VehicleServer <- Window : Provide("WindowPos", "CurrentValue", 100)
+App <- VehicleServer : Data("WindowPos", "CurrentValue", 100 )
+VehicleServer <- Window : Provide("WindowPos", "TargetValue", None)
+VehicleServer -> Window : Data("WindowPos", "TargetValue", None)
+
+
+@enduml
+

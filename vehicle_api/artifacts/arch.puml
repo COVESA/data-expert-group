@@ -1,0 +1,13 @@
+	
+
+@startuml
+
+
+component "Vehicle API Client" as Client
+component "Vehicle API Server" as Server
+component "Vehicle Data Provider" as DataProvider
+
+Client -> Server : Vehicle API
+Server <-> DataProvider : Exchanging Data with lower level Services/Networks
+
+@enduml
